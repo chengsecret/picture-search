@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.picturesearch.mapper.PictureCategoryMapper">
+
+    <resultMap id="BaseResultMap" type="com.example.picturesearch.entity.PictureCategory">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+            <result property="pictureId" column="picture_id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,category_id,picture_id
+    </sql>
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO picture_category (category_id,picture_id) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.categoryId},#{item.pictureId})
+        </foreach>
+    </insert>
+</mapper>
