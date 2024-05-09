@@ -15,4 +15,10 @@
         id,super_category,category,
         category_id
     </sql>
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO category (super_category,category,category_id) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.superCategory},#{item.category},#{item.categoryId})
+        </foreach>
+    </insert>
 </mapper>

@@ -3,6 +3,8 @@ package com.example.picturesearch.mapper;
 import com.example.picturesearch.entity.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.List;
+
 /**
 * @author liaoyuan
 * @description 针对表【category】的数据库操作Mapper
@@ -11,6 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 */
 public interface CategoryMapper extends BaseMapper<Category> {
 
+    void insertBatch(List<Category> pictureCategories);
 }
 
 

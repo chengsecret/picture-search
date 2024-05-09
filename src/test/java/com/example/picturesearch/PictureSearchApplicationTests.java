@@ -33,7 +33,7 @@ class PictureSearchApplicationTests {
 
     @Test
     public void load() {
-        String filePath = "D:\\code\\java\\picture-search\\picture-search\\src\\main\\resources\\data\\instances_val2017.json";
+        String filePath = "D:\\data\\数据集\\annotations_trainval2017\\annotations\\instances_val2017.json";
         try (Reader reader = new FileReader(filePath)) {
             JsonParser parser = new JsonParser();
             JsonObject root = parser.parse(reader).getAsJsonObject();
@@ -56,17 +56,20 @@ class PictureSearchApplicationTests {
     }
 
     public void savePictures(JsonArray images) {
+        List<Picture> pictureCategories = new ArrayList<>();
         for (JsonElement image : images) {
             Picture picture = new Picture(
                     null,
                     image.getAsJsonObject().get("file_name").getAsString(),
                     image.getAsJsonObject().get("coco_url").getAsString(),
                     image.getAsJsonObject().get("id").getAsLong());
-            pictureMapper.insert(picture);
+            pictureCategories.add(picture);
         }
+        pictureMapper.insertBatch(pictureCategories);
     }
 
     private void saveCategories(JsonElement categories) {
+        List<Category> pictureCategories = new ArrayList<>();
         categories.getAsJsonArray().forEach(cate -> {
             Category category = new Category(
                     null,
@@ -74,13 +77,14 @@ class PictureSearchApplicationTests {
                     cate.getAsJsonObject().get("name").getAsString(),
                     cate.getAsJsonObject().get("id").getAsInt()
             );
-            categoryMapper.insert(category);
+            pictureCategories.add(category);
         });
+        categoryMapper.insertBatch(pictureCategories);
     }
 
     @Test
     public void savePictureCategory() {
-        String filePath = "D:\\code\\java\\picture-search\\picture-search\\src\\main\\resources\\data\\instances_val2017.json";
+        String filePath = "D:\\data\\数据集\\annotations_trainval2017\\annotations\\instances_val2017.json";
         try (Reader reader = new FileReader(filePath)) {
             JsonParser parser = new JsonParser();
             JsonObject root = parser.parse(reader).getAsJsonObject();
@@ -109,6 +113,29 @@ class PictureSearchApplicationTests {
 
             // 假设 pictureCategoryMapper 有一个批量插入的方法
             pictureCategoryMapper.insertBatch(pictureCategories);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    @Test
+    public void test() {
+        String filePath = "D:\\data\\数据集\\annotations_trainval2017\\annotations\\instances_train2017.json";
+        try (Reader reader = new FileReader(filePath)) {
+            JsonParser parser = new JsonParser();
+            JsonObject root = parser.parse(reader).getAsJsonObject();
+            System.out.println("info:");
+            System.out.println(root.get("info"));
+            System.out.println("categories:");
+            System.out.println(root.get("categories"));
+            JsonArray images = root.getAsJsonArray("images");
+            System.out.println("Length of images: " + images.size());
+            System.out.println(images.get(0));
+            JsonArray annotations = root.getAsJsonArray("annotations");
+            System.out.println("Length of annotations: " + annotations.size());
+            System.out.println(annotations.get(0));
 
         } catch (Exception e) {
             e.printStackTrace();

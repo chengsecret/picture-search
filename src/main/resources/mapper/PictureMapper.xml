@@ -15,4 +15,10 @@
         id,picture_name,url,
         picture_id
     </sql>
+    <insert id="insertBatch" parameterType="java.util.List">
+        INSERT INTO picture (picture_name,url,picture_id) VALUES
+        <foreach collection="list" item="item" separator=",">
+            (#{item.pictureName},#{item.url},#{item.pictureId})
+        </foreach>
+    </insert>
 </mapper>
