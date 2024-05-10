@@ -40,7 +40,9 @@ public class Picture implements Serializable {
      */
     private Long pictureId;
 
-    @TableField(exist = false)
+    private String vector;
+    @TableField(exist =
+false)
     private static final long serialVersionUID = 1L;
 
     @Override

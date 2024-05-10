@@ -9,11 +9,12 @@
             <result property="pictureName" column="picture_name" jdbcType="VARCHAR"/>
             <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="pictureId" column="picture_id" jdbcType="BIGINT"/>
+            <result property="vector" column="vector" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,picture_name,url,
-        picture_id
+        picture_id, vector
     </sql>
     <insert id="insertBatch" parameterType="java.util.List">
         INSERT INTO picture (picture_name,url,picture_id) VALUES

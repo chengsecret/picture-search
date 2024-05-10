@@ -3,6 +3,7 @@ package com.example.picturesearch.mapper;
 import com.example.picturesearch.entity.Category;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,8 @@ import java.util.List;
 public interface CategoryMapper extends BaseMapper<Category> {
 
     void insertBatch(List<Category> pictureCategories);
+
+    ArrayList<String> selectSuperCategories(Long pictureId);
 }
 
 

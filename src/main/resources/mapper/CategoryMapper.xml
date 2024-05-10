@@ -21,4 +21,8 @@
             (#{item.superCategory},#{item.category},#{item.categoryId})
         </foreach>
     </insert>
+    <select id="selectSuperCategories" resultType="string">
+        select distinct c.super_category from category c join picture_category pc on c.category_id = pc.category_id
+        where pc.picture_id = #{pictureId}
+    </select>
 </mapper>
