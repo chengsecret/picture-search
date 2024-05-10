@@ -16,7 +16,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @ClassName EsTest
@@ -38,11 +37,10 @@ public class EsTest {
     @Test
     void upload() throws IOException {
         List<Picture> pictures = pictureMapper.selectList(new QueryWrapper<>());
-        String INDEX = "coco";
+        String INDEX = "test";
 
         // 构建一个批量操作BulkOperation的集合
         List<BulkOperation> bulkOperations = new ArrayList<>();
-        AtomicInteger i = new AtomicInteger(1);
         pictures.forEach(picture -> {
             EsUpload esUpload = new EsUpload();
             esUpload.setUrl(picture.getUrl());
@@ -52,10 +50,10 @@ public class EsTest {
             ArrayList<String> tags = categoryMapper.selectSuperCategories(picture.getPictureId());
             esUpload.setTag(tags);
             System.out.println(esUpload);
-            bulkOperations.add(new BulkOperation.Builder().create(d-> d.document(esUpload).id(String.valueOf(i.getAndIncrement())).index("coco")).build());
+            bulkOperations.add(new BulkOperation.Builder().create(d-> d.document(esUpload).id(String.valueOf(picture.getId())).index(INDEX)).build());
         });
 
-        BulkResponse response = client.bulk(e->e.index("coco").operations(bulkOperations));
+        BulkResponse response = client.bulk(e->e.index(INDEX).operations(bulkOperations));
         System.out.println(response.errors());
     }
 }
