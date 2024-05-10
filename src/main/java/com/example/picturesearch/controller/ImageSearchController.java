@@ -1,6 +1,7 @@
 package com.example.picturesearch.controller;
 
 import com.example.picturesearch.utils.R;
+import com.example.picturesearch.utils.ZipTools;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import java.util.List;
@@ -83,8 +84,7 @@ public class ImageSearchController {
     public R uploadDatasource(@RequestParam("file") MultipartFile datasource) {
         // 这里应该是调用服务层的方法来处理上传的数据集文件
         // 返回操作结果，例如 "上传成功"
-        System.out.println("数据集大小："+datasource.getSize());
-
+        ZipTools.dealZip(datasource);
         return R.ok(null,"上传成功");
     }
 }
