@@ -7,12 +7,8 @@ import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.nio.file.*;
 import java.util.ArrayList;
-import java.util.Enumeration;
 import java.util.List;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
@@ -147,19 +143,11 @@ public class ZipTools {
                 System.out.println("标签: " + stringList);
             }
 
-            // 清理临时文件夹（可选）
-//             Files.walk(tempFolderPathPath)
-//                 .forEach(path -> {
-//                     try {
-//                         Files.delete(path);
-//                     } catch (IOException e) {
-//                         e.printStackTrace();
-//                     }
-//                 });
-//             Files.delete(tempFolderPathPath);
+            // todo清理临时文件夹
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
     }
+
 }

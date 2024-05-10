@@ -74,6 +74,11 @@
             <artifactId>commons-compress</artifactId>
             <version>1.21</version> <!-- 请使用最新的版本号 -->
         </dependency>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.8.26</version>
+        </dependency>
     </dependencies>
 
     <build>
