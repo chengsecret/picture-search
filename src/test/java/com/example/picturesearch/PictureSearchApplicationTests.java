@@ -62,7 +62,7 @@ class PictureSearchApplicationTests {
                     null,
                     image.getAsJsonObject().get("file_name").getAsString(),
                     image.getAsJsonObject().get("coco_url").getAsString(),
-                    image.getAsJsonObject().get("id").getAsLong());
+                    image.getAsJsonObject().get("id").getAsLong(), null);
             pictureCategories.add(picture);
         }
         pictureMapper.insertBatch(pictureCategories);
