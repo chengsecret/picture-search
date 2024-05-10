@@ -48,6 +48,10 @@ public class ImageSearchController {
     ) {
         // 这里应该是调用服务层的方法来根据上传的图片进行搜索
         // 返回搜索结果的图片URL列表
+        System.out.println("数据集："+datasource);
+        System.out.println("返回数量："+topN);
+        System.out.println("约束："+category);
+        System.out.println("图片大小："+picture.getSize());
         return R.ok(List.of("http://10.4.177.198:39000/sanhui/animals/cat1.png", "http://10.4.177.198:39000/sanhui/animals/cat1.png")); // 示例返回值
     }
 
@@ -67,6 +71,10 @@ public class ImageSearchController {
             @RequestParam("img") String img
     ) {
         // 这里应该是调用服务层的方法来进行随机图片搜索
+        System.out.println("数据集："+datasource);
+        System.out.println("返回数量："+topN);
+        System.out.println("约束："+category);
+        System.out.println("图片url："+img);
         return R.ok(List.of("http://10.4.177.198:39000/sanhui/animals/cat1.png", "http://10.4.177.198:39000/sanhui/animals/cat1.png")); // 示例返回值
     }
 
@@ -75,6 +83,8 @@ public class ImageSearchController {
     public R uploadDatasource(@RequestParam("file") MultipartFile datasource) {
         // 这里应该是调用服务层的方法来处理上传的数据集文件
         // 返回操作结果，例如 "上传成功"
+        System.out.println("数据集大小："+datasource.getSize());
+
         return R.ok(null,"上传成功");
     }
 }
