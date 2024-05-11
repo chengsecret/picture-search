@@ -1,4 +1,13 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 1024MB
+      max-request-size: 1024MB
+  minio:
+    endpoint: http://10.4.177.198:39000/
+    access-key: eEE7Bu5pGfkGFBeyLxcQ
+    secret-key: 2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG
+    bucket: sanhui
   datasource:
     username: root
     password: 99998888*

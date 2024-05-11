@@ -1,5 +1,9 @@
 package com.example.picturesearch.utils;
 
+import cn.hutool.core.io.FileUtil;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+
 import lombok.SneakyThrows;
 
 import org.springframework.boot.configurationprocessor.json.JSONArray;
@@ -21,12 +25,25 @@ import java.util.zip.ZipInputStream;
  * @Version 1.0
  */
 
+
 public class ZipTools {
 
-    // 假设的minio上传方法
+
+    @SneakyThrows
     public static String uploadToMinIO(String imagePath, byte[] imageBytes) {
-        // todo 实际的上传逻辑
-        return "http://minio.server/" + imagePath; // 假设的返回URL
+        MinioClient minioClient = MinioClient.builder()
+                .endpoint("http://10.4.177.198:39000/")
+                .credentials("eEE7Bu5pGfkGFBeyLxcQ", "2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG")
+                .build();
+        minioClient.putObject(PutObjectArgs.builder()
+                .bucket("sanhui") // bucket 必须传递
+                .contentType(FileUtil.getMimeType(imagePath))
+                .object(imagePath) // 相对路径作为 key
+                .stream(new ByteArrayInputStream(imageBytes), imageBytes.length, -1) // 文件内容
+                .build());
+
+
+        return "http://10.4.177.199:39000/sanhui/" + imagePath; // 假设的返回URL
     }
 
     // 获取图片字节流的方法
@@ -100,6 +117,7 @@ public class ZipTools {
     }
 
 
+    @SneakyThrows
     public static void dealZip(MultipartFile datasource) {
         System.out.println("开始处理压缩文件");
 
@@ -124,16 +142,17 @@ public class ZipTools {
             // 循环遍历json数组获取对象
             for (int i = 0; i < jsonArray.length(); i++) {
                 // 获取图片的路径和标签
-                String imagePath = jsonArray.getJSONObject(i).getString("image");
+                String imagePath = tempFolderPath + "/" + jsonArray.getJSONObject(i).getString("image");
+
                 JSONArray tags = jsonArray.getJSONObject(i).getJSONArray("tag");
                 List<String> stringList = new ArrayList<>();
 
                 // 遍历JSONArray并将每个元素添加到ArrayList中
-                for (int ii = 0; ii < tags.length(); ii++) {
-                    stringList.add(tags.getString(ii));
+                for (int j = 0; j < tags.length(); j++) {
+                    stringList.add(tags.getString(j));
                 }
                 // 获取图片的字节流
-                byte[] imageBytes = getImageBytes(tempFolderPath+"/"+imagePath);
+                byte[] imageBytes = getImageBytes(imagePath);
 
                 // 上传图片到minio服务器，返回图片的url
                 String imageUrl = uploadToMinIO(imagePath, imageBytes);
@@ -143,7 +162,8 @@ public class ZipTools {
                 System.out.println("标签: " + stringList);
             }
 
-            // todo清理临时文件夹
+            // 清理临时文件夹
+            FileUtil.del(tempFolderPathPath);
 
         } catch (IOException | JSONException e) {
             e.printStackTrace();

@@ -79,6 +79,15 @@
             <artifactId>hutool-all</artifactId>
             <version>5.8.26</version>
         </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.5.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.minidev</groupId>
+            <artifactId>json-smart</artifactId>
+        </dependency>
     </dependencies>
 
     <build>
