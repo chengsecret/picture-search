@@ -40,6 +40,8 @@ public class Category implements Serializable {
      */
     private Integer categoryId;
 
+    private Integer datasetId;
+
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;
 

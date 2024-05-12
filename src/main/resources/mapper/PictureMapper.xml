@@ -10,16 +10,17 @@
             <result property="url" column="url" jdbcType="VARCHAR"/>
             <result property="pictureId" column="picture_id" jdbcType="BIGINT"/>
             <result property="vector" column="vector" jdbcType="VARCHAR"/>
+            <result property="datasetId" column="dataset_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,picture_name,url,
-        picture_id, vector
+        picture_id, vector, dataset_id
     </sql>
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO picture (picture_name,url,picture_id) VALUES
+        INSERT INTO picture (picture_name,url,picture_id, dataset_id) VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.pictureName},#{item.url},#{item.pictureId})
+            (#{item.pictureName},#{item.url},#{item.pictureId}, #{item.datasetId})
         </foreach>
     </insert>
 </mapper>

@@ -9,20 +9,22 @@
             <result property="superCategory" column="super_category" jdbcType="VARCHAR"/>
             <result property="category" column="category" jdbcType="VARCHAR"/>
             <result property="categoryId" column="category_id" jdbcType="INTEGER"/>
+            <result property="datasetId" column="dataset_id" jdbcType="INTEGER"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,super_category,category,
-        category_id
+        category_id, dataset_id
     </sql>
     <insert id="insertBatch" parameterType="java.util.List">
-        INSERT INTO category (super_category,category,category_id) VALUES
+        INSERT INTO category (super_category,category,category_id,dataset_id) VALUES
         <foreach collection="list" item="item" separator=",">
-            (#{item.superCategory},#{item.category},#{item.categoryId})
+            (#{item.superCategory},#{item.category},#{item.categoryId}, #{item.datasetId})
         </foreach>
     </insert>
     <select id="selectSuperCategories" resultType="string">
-        select distinct c.super_category from category c join picture_category pc on c.category_id = pc.category_id
+        select distinct c.super_category
+        from category c join picture_category pc on c.category_id = pc.category_id
         where pc.picture_id = #{pictureId}
     </select>
 </mapper>

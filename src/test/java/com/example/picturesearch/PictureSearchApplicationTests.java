@@ -62,7 +62,7 @@ class PictureSearchApplicationTests {
                     null,
                     image.getAsJsonObject().get("file_name").getAsString(),
                     image.getAsJsonObject().get("coco_url").getAsString(),
-                    image.getAsJsonObject().get("id").getAsLong(), null);
+                    image.getAsJsonObject().get("id").getAsLong(), null, null);
             pictureCategories.add(picture);
         }
         pictureMapper.insertBatch(pictureCategories);
@@ -75,7 +75,7 @@ class PictureSearchApplicationTests {
                     null,
                     cate.getAsJsonObject().get("supercategory").getAsString(),
                     cate.getAsJsonObject().get("name").getAsString(),
-                    cate.getAsJsonObject().get("id").getAsInt()
+                    cate.getAsJsonObject().get("id").getAsInt(), null
             );
             pictureCategories.add(category);
         });

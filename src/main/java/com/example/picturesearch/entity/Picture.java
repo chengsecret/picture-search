@@ -41,6 +41,9 @@ public class Picture implements Serializable {
     private Long pictureId;
 
     private String vector;
+
+    private Integer datasetId;
+
     @TableField(exist =
 false)
     private static final long serialVersionUID = 1L;
