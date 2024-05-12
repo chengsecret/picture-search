@@ -17,6 +17,8 @@ public interface CategoryMapper extends BaseMapper<Category> {
     void insertBatch(List<Category> pictureCategories);
 
     ArrayList<String> selectSuperCategories(Long pictureId);
+
+    ArrayList<String> selectSuperCategoriesByDatasetId(Integer datasetId);
 }
 
 

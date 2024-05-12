@@ -10,4 +10,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface PictureService extends IService<Picture> {
 
+    String getRandomPicture(String dataset);
 }
