@@ -1,6 +1,7 @@
 package com.example.picturesearch.utils;
 
 import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.util.ZipUtil;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 
@@ -30,18 +31,23 @@ public class ZipTools {
 
 
     @SneakyThrows
-    public static String uploadToMinIO(String imagePath, byte[] imageBytes) {
+    public static String uploadToMinIO(String imagePath) {
         MinioClient minioClient = MinioClient.builder()
                 .endpoint("http://10.4.177.198:39000/")
                 .credentials("eEE7Bu5pGfkGFBeyLxcQ", "2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG")
                 .build();
-        minioClient.putObject(PutObjectArgs.builder()
-                .bucket("sanhui") // bucket 必须传递
-                .contentType(FileUtil.getMimeType(imagePath))
-                .object(imagePath) // 相对路径作为 key
-                .stream(new ByteArrayInputStream(imageBytes), imageBytes.length, -1) // 文件内容
-                .build());
 
+        // 创建 FileInputStream 实例
+        FileInputStream stream = new FileInputStream(imagePath);
+
+        // 上传文件到 MinIO
+        minioClient.putObject(
+                PutObjectArgs.builder()
+                        .bucket("sanhui")
+                        .object(imagePath)
+                        .stream(stream, new File(imagePath).length(), -1)
+                        .build()
+        );
 
         return "http://10.4.177.199:39000/sanhui/" + imagePath; // 假设的返回URL
     }
@@ -57,7 +63,7 @@ public class ZipTools {
         }
 
         // 读取文件为字节数组
-        return Files.readAllBytes(imageFilePath);
+        return FileUtil.readBytes(imageFilePath);
     }
 
     // 读取JSON数组的方法
@@ -82,40 +88,19 @@ public class ZipTools {
         return UUID.randomUUID().toString();
     }
 
-    // 解压ZIP文件到指定路径
-    public static void unzip(MultipartFile file, Path destPath) throws IOException {
-        if (file != null && !file.isEmpty()) {
-            try (InputStream is = file.getInputStream();
-                 ZipInputStream zis = new ZipInputStream(new BufferedInputStream(is))) {
-
-                ZipEntry zipEntry = zis.getNextEntry();
-                while (zipEntry != null) {
-                    Path entryPath = destPath.resolve(zipEntry.getName());
-                    if (zipEntry.isDirectory()) {
-                        // 创建目录
-                        Files.createDirectories(entryPath);
-                    } else {
-                        // 创建父目录，确保文件的路径存在
-                        Files.createDirectories(entryPath.getParent());
-                        try (OutputStream out = Files.newOutputStream(entryPath)) {
-                            byte[] buffer = new byte[1024];
-                            int len;
-                            while ((len = zis.read(buffer)) > 0) {
-                                out.write(buffer, 0, len);
-                            }
-                        }
-                    }
-                    // 切换到下一个条目
-                    zipEntry = zis.getNextEntry();
-                    zis.closeEntry(); // 关闭当前条目
-                }
-            } catch (IOException e) {
-                // Handle the exception
-                e.printStackTrace();
+    public static File convert(MultipartFile file) throws IOException {
+        File convFile = new File(file.getOriginalFilename());
+        convFile.createNewFile();
+        try (InputStream inputStream = file.getInputStream();
+             OutputStream outputStream = new FileOutputStream(convFile)) {
+            int byteRead = 0;
+            byte[] buffer = new byte[1024];
+            while ((byteRead = inputStream.read(buffer)) != -1) {
+                outputStream.write(buffer, 0, byteRead);
             }
         }
+        return convFile;
     }
-
 
     @SneakyThrows
     public static void dealZip(MultipartFile datasource) {
@@ -124,12 +109,15 @@ public class ZipTools {
         try {
             // 解压文件到uuid命名的临时文件夹中
             String tempFolderPath = generateUUID();
+            File targetFile = new File(tempFolderPath);
+            File zipFile = convert(datasource);
             Path tempFolderPathPath = Paths.get(tempFolderPath);
             // 确保临时文件夹存在
             Files.createDirectories(tempFolderPathPath);
 
             // 解压文件到临时文件夹
-            unzip(datasource, tempFolderPathPath);
+            ZipUtil.unzip(zipFile, targetFile);
+            FileUtil.del(zipFile);
             // 检查临时文件夹中是否有description.json，如果没有就报错
             Path descriptionJsonPath = tempFolderPathPath.resolve("description.json");
             if (!Files.exists(descriptionJsonPath)) {
@@ -152,10 +140,10 @@ public class ZipTools {
                     stringList.add(tags.getString(j));
                 }
                 // 获取图片的字节流
-                byte[] imageBytes = getImageBytes(imagePath);
+//                byte[] imageBytes = getImageBytes(imagePath);
 
                 // 上传图片到minio服务器，返回图片的url
-                String imageUrl = uploadToMinIO(imagePath, imageBytes);
+                String imageUrl = uploadToMinIO(imagePath);
 
                 // 打印图片的url和标签
                 System.out.println("图片URL: " + imageUrl);

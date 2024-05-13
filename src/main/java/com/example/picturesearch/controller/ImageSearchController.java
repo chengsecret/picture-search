@@ -48,12 +48,13 @@ public class ImageSearchController {
     }
 
     // 1.3 获取随机图片 API
-    @GetMapping("/randPic")
-    public R getRandomPicture() {
+    @PostMapping("/randPic")
+    public R getRandomPicture(
+            @RequestParam("datasource") String datasource
+    ) {
         // 应该由前端传来数据集名称
-        String dataset = "coco";
         // 这里应该是调用服务层的方法来获取随机图片的URL
-        List<String> url = pictureService.getRandomPicture(dataset);
+        List<String> url = pictureService.getRandomPicture(datasource);
         if (url== null || url.isEmpty()) {
             return R.failed("无该数据集");
         }
