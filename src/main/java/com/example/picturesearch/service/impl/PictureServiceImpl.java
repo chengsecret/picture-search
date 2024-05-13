@@ -10,6 +10,8 @@ import com.example.picturesearch.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
 * @author liaoyuan
 * @description 针对表【picture】的数据库操作Service实现
@@ -23,7 +25,7 @@ public class PictureServiceImpl extends ServiceImpl<PictureMapper, Picture>
     @Autowired
     DatasetMapper datasetMapper;
     @Override
-    public String getRandomPicture(String datasetName) {
+    public List<String> getRandomPicture(String datasetName) {
         QueryWrapper<Dataset> wrapper = new QueryWrapper<>();
         wrapper.eq("name", datasetName);
         Dataset dataset = datasetMapper.selectOne(wrapper);

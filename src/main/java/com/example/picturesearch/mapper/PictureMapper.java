@@ -15,7 +15,7 @@ public interface PictureMapper extends BaseMapper<Picture> {
 
     void insertBatch(List<Picture> pictureCategories);
 
-    String selectRandomPicture(String dataset);
+    List<String> selectRandomPicture(String dataset);
 }
 
 

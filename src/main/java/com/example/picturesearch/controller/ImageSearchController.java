@@ -1,6 +1,5 @@
 package com.example.picturesearch.controller;
 
-import com.alibaba.druid.util.StringUtils;
 import com.example.picturesearch.dto.DatasetInfoDTO;
 import com.example.picturesearch.elasticsearch.EsClient;
 import com.example.picturesearch.service.DatasetService;
@@ -54,11 +53,11 @@ public class ImageSearchController {
         // 应该由前端传来数据集名称
         String dataset = "coco";
         // 这里应该是调用服务层的方法来获取随机图片的URL
-        String url = pictureService.getRandomPicture(dataset);
-        if (StringUtils.isEmpty(url)) {
+        List<String> url = pictureService.getRandomPicture(dataset);
+        if (url== null || url.isEmpty()) {
             return R.failed("无该数据集");
         }
-        return R.ok(List.of(url)); // 示例返回值
+        return R.ok(url); // 示例返回值
     }
 
     // 1.4 随机图片搜索接口

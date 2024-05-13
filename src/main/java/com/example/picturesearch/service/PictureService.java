@@ -1,7 +1,9 @@
 package com.example.picturesearch.service;
 
-import com.example.picturesearch.entity.Picture;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.picturesearch.entity.Picture;
+
+import java.util.List;
 
 /**
 * @author liaoyuan
@@ -10,5 +12,5 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface PictureService extends IService<Picture> {
 
-    String getRandomPicture(String dataset);
+    List<String> getRandomPicture(String dataset);
 }

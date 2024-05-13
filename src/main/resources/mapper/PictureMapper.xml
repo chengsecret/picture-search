@@ -24,6 +24,6 @@
         </foreach>
     </insert>
     <select id="selectRandomPicture" resultType="java.lang.String">
-        select url from picture where dataset_id = #{dataset} order by rand() limit 1
+        select url from picture where dataset_id = #{dataset} order by rand() limit 9
     </select>
 </mapper>
