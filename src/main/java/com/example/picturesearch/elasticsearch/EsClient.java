@@ -57,7 +57,9 @@ public class EsClient {
                     .index(index)
                     .query(query -> query
                             .bool(b -> b
-                                    .must(m -> m.term(t -> t.field("tag").value(FieldValue.of(category))))
+                                    .must(m -> m.match(t -> t
+                                            .field("tag")
+                                            .query(FieldValue.of(category))))
                                     .must(m->m.knn(k -> k
                                             .field("vector")
                                             .numCandidates(100)
@@ -93,7 +95,7 @@ public class EsClient {
             esUpload.setVector(restoreVector(picture.getVector()));
             esUpload.setImageId(String.valueOf(picture.getPictureId()));
             esUpload.setName(picture.getPictureName());
-            ArrayList<String> tags = categoryMapper.selectSuperCategories(picture.getPictureId());
+            ArrayList<String> tags = categoryMapper.selectSuperCategories(picture.getPictureId(), dataset.getId());
             esUpload.setTag(tags);
             System.out.println(esUpload);
             bulkOperations.add(new BulkOperation.Builder()

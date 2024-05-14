@@ -25,7 +25,7 @@
     <select id="selectSuperCategories" resultType="string">
         select distinct c.super_category
         from category c join picture_category pc on c.category_id = pc.category_id
-        where pc.picture_id = #{pictureId}
+        where pc.picture_id = #{pictureId} and c.dataset_id = #{datasetId}
     </select>
     <select id="selectSuperCategoriesByDatasetId" resultType="java.lang.String">
         select distinct  super_category

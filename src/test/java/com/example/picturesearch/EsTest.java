@@ -50,7 +50,7 @@ public class EsTest {
             esUpload.setVector(restService.getVector(picture.getUrl()));
             esUpload.setImageId(String.valueOf(picture.getPictureId()));
             esUpload.setName(picture.getPictureName());
-            ArrayList<String> tags = categoryMapper.selectSuperCategories(picture.getPictureId());
+            ArrayList<String> tags = categoryMapper.selectSuperCategories(picture.getPictureId(), 1);
             esUpload.setTag(tags);
             System.out.println(esUpload);
             bulkOperations.add(new BulkOperation.Builder().create(d-> d.document(esUpload).id(String.valueOf(picture.getId())).index(INDEX)).build());
