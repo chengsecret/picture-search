@@ -26,15 +26,15 @@ import java.util.*;
 
 
 public class ZipTools {
-    @Value("${minio.endpoint}")
+    @Value("${spring.minio.endpoint}")
     static String minioUrl = "http://10.4.177.198:39000/";
-    @Value("${minio.access-key}")
+    @Value("${spring.minio.access-key}")
     static String accessKey = "eEE7Bu5pGfkGFBeyLxcQ";
-    @Value("${minio.secret-key}")
+    @Value("${spring.minio.secret-key}")
     static String secretKey = "2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG";
-    @Value("${minio.bucket}")
+    @Value("${spring.minio.bucket}")
     static String bucketName = "sanhui";
-    @Value("${minio.returnUrl}")
+    @Value("${spring.minio.returnUrl}")
     static String returnUrl = "http://10.4.177.198:39000/sanhui/";
 
     @SneakyThrows
