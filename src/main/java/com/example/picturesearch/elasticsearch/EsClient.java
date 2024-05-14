@@ -6,6 +6,7 @@ import co.elastic.clients.elasticsearch.core.BulkResponse;
 import co.elastic.clients.elasticsearch.core.SearchRequest;
 import co.elastic.clients.elasticsearch.core.SearchResponse;
 import co.elastic.clients.elasticsearch.core.bulk.BulkOperation;
+import com.alibaba.druid.util.StringUtils;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.example.picturesearch.entity.Dataset;
 import com.example.picturesearch.entity.Picture;
@@ -41,7 +42,18 @@ public class EsClient {
     DatasetMapper datasetMapper;
 
     public List<String> similarSearch(List<Double> vector, int topN, String index, String category) throws IOException {
-        SearchRequest searchRequest = SearchRequest.of(builder -> builder
+        SearchRequest searchRequest = null;
+        if (StringUtils.isEmpty(category) || category.equals("null")) {
+            searchRequest = SearchRequest.of(builder -> builder
+                    .index(index)
+                    .query(query -> query
+                            .knn(k -> k
+                            .field("vector")
+                            .numCandidates(100)
+                            .queryVector(vector)))
+                    .size(topN));
+        }else{
+            searchRequest = SearchRequest.of(builder -> builder
                     .index(index)
                     .query(query -> query
                             .bool(b -> b
@@ -51,6 +63,8 @@ public class EsClient {
                                             .numCandidates(100)
                                             .queryVector(vector)))))
                     .size(topN));
+        }
+
         SearchResponse<EsUpload> response = client.search(searchRequest, EsUpload.class);
         return response.hits().hits().stream().map(hit -> {
             if (hit.source()== null) {

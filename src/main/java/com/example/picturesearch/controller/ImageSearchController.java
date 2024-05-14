@@ -62,6 +62,7 @@ public class ImageSearchController {
     ) {
         // 应该由前端传来数据集名称
         // 这里应该是调用服务层的方法来获取随机图片的URL
+        System.out.println(datasource);
         List<String> url = pictureService.getRandomPicture(datasource);
         if (url== null || url.isEmpty()) {
             return R.failed("无该数据集");
@@ -89,6 +90,7 @@ public class ImageSearchController {
     public R uploadDatasource(@RequestParam("file") MultipartFile datasource) {
         // 这里应该是调用服务层的方法来处理上传的数据集文件
         // 返回操作结果，例如 "上传成功"
+        System.out.println(datasource.getOriginalFilename());
         DatasetUploadDTO datasetUploadDTO = ZipTools.dealZip(datasource);
         boolean success = pictureService.uploadPictures(datasetUploadDTO);
         if (success) {
