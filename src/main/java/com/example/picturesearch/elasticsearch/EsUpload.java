@@ -19,6 +19,6 @@ public class EsUpload {
     private String imageId;
     private String name;
     private String url;
-    private Float[] vector;
+    private Double[] vector;
     private ArrayList<String> tag;
 }

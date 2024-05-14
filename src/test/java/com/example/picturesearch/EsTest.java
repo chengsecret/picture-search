@@ -9,6 +9,7 @@ import com.example.picturesearch.entity.Picture;
 import com.example.picturesearch.mapper.CategoryMapper;
 import com.example.picturesearch.mapper.PictureCategoryMapper;
 import com.example.picturesearch.mapper.PictureMapper;
+import com.example.picturesearch.service.RestService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -33,18 +34,20 @@ public class EsTest {
     PictureMapper pictureMapper;
     @Autowired
     PictureCategoryMapper pictureCategoryMapper;
+    @Autowired
+    RestService restService;
 
     @Test
     void upload() throws IOException {
         List<Picture> pictures = pictureMapper.selectList(new QueryWrapper<>());
-        String INDEX = "test";
+        String INDEX = "coco";
 
         // 构建一个批量操作BulkOperation的集合
         List<BulkOperation> bulkOperations = new ArrayList<>();
         pictures.forEach(picture -> {
             EsUpload esUpload = new EsUpload();
             esUpload.setUrl(picture.getUrl());
-            esUpload.setVector(new Float[]{1.1f, 2.2f, 3.3f});
+            esUpload.setVector(restService.getVector(picture.getUrl()));
             esUpload.setImageId(String.valueOf(picture.getPictureId()));
             esUpload.setName(picture.getPictureName());
             ArrayList<String> tags = categoryMapper.selectSuperCategories(picture.getPictureId());

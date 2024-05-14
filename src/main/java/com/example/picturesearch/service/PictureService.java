@@ -1,6 +1,7 @@
 package com.example.picturesearch.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.example.picturesearch.dto.DatasetUploadDTO;
 import com.example.picturesearch.entity.Picture;
 
 import java.util.List;
@@ -13,4 +14,6 @@ import java.util.List;
 public interface PictureService extends IService<Picture> {
 
     List<String> getRandomPicture(String dataset);
+
+    boolean uploadPictures(DatasetUploadDTO datasetUploadDTO);
 }
