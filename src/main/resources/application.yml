@@ -4,16 +4,16 @@ spring:
       max-file-size: 1024MB
       max-request-size: 1024MB
   minio:
-    endpoint: http://127.0.0.1:39000/
+    endpoint: http://10.249.53.208:39000/
     access-key: eEE7Bu5pGfkGFBeyLxcQ
     secret-key: 2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG
     bucket: sanhui
-    returnUrl: http://127.0.0.1:39000/sanhui/
+    returnUrl: http://10.249.53.208:39000/sanhui/
   datasource:
     username: root
     password: yourpassword
     #?serverTimezone=UTC\u89E3\u51B3\u65F6\u533A\u7684\u62A5\u9519
-    url: jdbc:mysql://127.0.0.1:13306/picture_search?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://10.249.53.208:13306/picture_search?serverTimezone=UTC&useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     initialSize: 5
@@ -38,7 +38,7 @@ spring:
 
 elasticsearch:
   schema: http
-  address: 127.0.0.1:19200
+  address: 10.249.53.208:19200
   connectTimeout: 10000
   socketTimeout: 15000
   connectionRequestTimeout: 20000
@@ -48,6 +48,6 @@ elasticsearch:
 
 
 model:
-  url: http://127.0.0.1:15000/vector
+  url: http://10.249.53.208:15000/vector
 server:
   port: 8888
