@@ -8,6 +8,7 @@ spring:
     access-key: eEE7Bu5pGfkGFBeyLxcQ
     secret-key: 2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG
     bucket: sanhui
+    returnUrl: http://10.4.177.198:39000/sanhui/
   datasource:
     username: root
     password: 99998888*
@@ -44,3 +45,7 @@ elasticsearch:
   maxConnectNum: 100
   maxConnectPerRoute: 100
   index: "coco"
+
+
+model:
+  url: http://10.4.177.199:5000/

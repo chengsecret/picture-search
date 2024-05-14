@@ -6,6 +6,7 @@ import com.example.picturesearch.dto.DatasetUploadDTO;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.configurationprocessor.json.JSONArray;
 import org.springframework.boot.configurationprocessor.json.JSONException;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,13 +26,22 @@ import java.util.*;
 
 
 public class ZipTools {
-
+    @Value("${minio.endpoint}")
+    static String minioUrl = "http://10.4.177.198:39000/";
+    @Value("${minio.access-key}")
+    static String accessKey = "eEE7Bu5pGfkGFBeyLxcQ";
+    @Value("${minio.secret-key}")
+    static String secretKey = "2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG";
+    @Value("${minio.bucket}")
+    static String bucketName = "sanhui";
+    @Value("${minio.returnUrl}")
+    static String returnUrl = "http://10.4.177.198:39000/sanhui/";
 
     @SneakyThrows
     public static String uploadToMinIO(String imagePath){
         MinioClient minioClient = MinioClient.builder()
-                .endpoint("http://10.4.177.198:39000/")
-                .credentials("eEE7Bu5pGfkGFBeyLxcQ", "2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG")
+                .endpoint(minioUrl)
+                .credentials(accessKey, secretKey)
                 .build();
 
         // 创建 FileInputStream 实例
@@ -39,21 +49,21 @@ public class ZipTools {
             // 上传文件到 MinIO
             minioClient.putObject(
                     PutObjectArgs.builder()
-                            .bucket("sanhui")
+                            .bucket(bucketName)
                             .object(imagePath)
                             .stream(stream, new File(imagePath).length(), -1)
                             .build()
             );
         }
 
-        return "http://10.4.177.198:39000/sanhui/" + imagePath; // 假设的返回URL
+        return returnUrl + imagePath; // 假设的返回URL
     }
 
     @SneakyThrows
     public static String uploadToMinIO(MultipartFile picture){
         MinioClient minioClient = MinioClient.builder()
-                .endpoint("http://10.4.177.198:39000/")
-                .credentials("eEE7Bu5pGfkGFBeyLxcQ", "2UkCz7Qds640I7nOkPhRXsxsN1Dx3weWM8CK6WVG")
+                .endpoint(minioUrl)
+                .credentials(accessKey, secretKey)
                 .build();
 
         String imagePath = picture.getOriginalFilename();
@@ -62,14 +72,14 @@ public class ZipTools {
             // 上传文件到 MinIO
             minioClient.putObject(
                     PutObjectArgs.builder()
-                            .bucket("sanhui")
+                            .bucket(bucketName)
                             .object(imagePath)
                             .stream(stream, picture.getSize(), -1)
                             .build()
             );
         }
 
-        return "http://10.4.177.198:39000/sanhui/" + imagePath; // 假设的返回URL
+        return returnUrl + imagePath; // 假设的返回URL
     }
 
     // 获取图片字节流的方法
