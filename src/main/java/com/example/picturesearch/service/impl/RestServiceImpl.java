@@ -1,10 +1,16 @@
 package com.example.picturesearch.service.impl;
 
+import cn.hutool.http.HttpUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.example.picturesearch.service.RestService;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 /**
  * @ClassName RestServiceImpl
@@ -21,20 +27,22 @@ public class RestServiceImpl implements RestService {
     String url;
     @Override
     public Double[] getVector(String imagePath) {
-//        Map<String, String> requestMap = new HashMap<>();
-//        requestMap.put("url", imagePath);
-
-        // 发送POST请求
-//        List<Double> response = restTemplate.postForObject(url, requestMap, List.class);
-//        if (response != null) {
-//            return response.toArray(new Double[0]);
-//
-//        }else {
-//            return null;
-//        }
-        Double[] vector = new Double[512];
-        for (int i = 0; i < 512; i++)
-            vector[i] = Math.random();
-        return vector;
+        JSONObject params = JSONUtil.createObj();
+        params.set("url", imagePath);
+        String post = HttpUtil.post(url, params);
+        System.out.println(post);
+        // 返回512维向量
+        return null;
     }
+
+
+    @Data
+    static class VectorResponse {
+        private List<List<Double>> vector;
+
+        public void setVector(List<List<Double>> vector) {
+            this.vector = vector;
+        }
+    }
+
 }

@@ -48,4 +48,4 @@ elasticsearch:
 
 
 model:
-  url: http://10.4.177.199:5000/
+  url: http://10.4.177.199:5555/vector/
